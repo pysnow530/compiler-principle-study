@@ -7,30 +7,42 @@ Description: tree algorithm
 
 class Node:
 
-    def __init__(self):
-        self.content = None
+    def __init__(self, content):
+        self.content = content
         self.childs = []
 
     def addChild(self, childNode):
-        return self.childs.append(childNode)
+        self.childs.append(childNode)
+        return self
 
-    def getChilds(self, childNodes):
+    def addChilds(self, childNodes):
+        self.childs += childNodes
+        return self
+
+    def getChilds(self):
         return self.childs
 
     def setContent(self, content):
         self.content = content
 
-    def getContent(self, content):
+    def getContent(self):
         return self.content
 
     def __str__(self):
         return 'node("' + self.content + '")'
 
-class Tree:
+root = Node('root content').addChilds([
+    Node('child1').addChilds([
+        Node('cchild1'),
+        Node('cchild2'),
+    ]),
+    Node('child2'),
+])
 
-    def __init__(self, rootNode):
-        self.root = rootNode
+def trace(root):
+    print 'root>>> ' + root.getContent() + '...'
+    childs = root.getChilds()
+    for child in childs:
+        trace(child)
 
-root = Node()
-root.setContent('root node')
-print root
+trace(root)
