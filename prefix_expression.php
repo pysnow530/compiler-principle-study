@@ -10,7 +10,7 @@
 define('DEBUG', true);
 
 $expression = '+a-a;';      // wrong
-// $expression = '+a-aa;';  // error
+// $expression = '+a-aa;';  // right
 $current = 0;
 $lookahead = $expression[$current];
 
