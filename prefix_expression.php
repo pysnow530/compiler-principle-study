@@ -7,20 +7,21 @@
  * @copyright pysnow530@163.com, 12 四月, 2015
  * @package default
  **/
+require 'Expression.php';
+
 define('DEBUG', true);
 
-$expression = '+a-a;';      // wrong
-// $expression = '+a-aa;';  // right
-$current = 0;
-$lookahead = $expression[$current];
+$expression = new Expression('+a-a');           // wrong
+// $expression = new Expression('+a-aa');          // right
+$lookahead = $expression->get_next_terminal();
 
 S();
 
 function get_next_terminal()
 {
-    global $expression, $current;
+    global $expression;
 
-    return $expression[++$current];
+    return $expression->get_next_terminal();
 }
 
 function report($err_str)

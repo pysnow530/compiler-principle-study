@@ -4,29 +4,32 @@
  * +--------------------+
  * | S →  S ( S ) S | ε |
  * +--------------------+ endless expression
+ * translate to
+ * S →  ( S ) S S | ε
  * @author pysnow530@163.com
  * @version $Id$
  * @copyright pysnow530@163.com, 12 四月, 2015
  * @package default
  **/
+require 'Expression.php';
+
 define('DEBUG', true);
 
-$expression = '(()2())';      // wrong
-// $expression = '+a-aa;';  // right
-$current = 0;
-$lookahead = $expression[$current];
+$expression = new Expression('(()2())');      // wrong
+$expression = new Expression('(()())');      // right
+$lookahead = $expression->get_next_terminal();
 
-S();
+// S();
+corrected_S();
 
 /**
  * @return string '' is epsilon
  */
 function get_next_terminal()
 {
-    global $expression, $current;
+    global $expression;
 
-    $current++;
-    return isset($expression[$current]) ? $expression[$current] : '';
+    return $expression->get_next_terminal();
 }
 
 function report($err_str)
@@ -51,10 +54,22 @@ function S()
 {
     global $lookahead;
 
-    if ($lookahead == '') {
-        return 0;
-    } else {
+    if ($lookahead != 'ε') {
         S(); match('('); S(); match(')'); S();
     }
+
+    return 0;
 }
+
+function corrected_S()
+{
+    global $lookahead;
+
+    if ($lookahead == '(') {
+        match('('); corrected_S(); match(')'); corrected_S(); corrected_S();
+    }
+
+    return;
+}
+
 ?>
